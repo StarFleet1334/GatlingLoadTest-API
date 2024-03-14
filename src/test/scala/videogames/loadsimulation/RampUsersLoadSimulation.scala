@@ -1,14 +1,10 @@
 package videogames.loadsimulation
 
-
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 
-
-
-
-class BasicLoadSimulation extends Simulation {
+class RampUsersLoadSimulation extends Simulation{
 
   // Http Configuration
   val httpProtocol = http.baseUrl(url = "https://videogamedb.uk/api")
@@ -51,10 +47,9 @@ class BasicLoadSimulation extends Simulation {
   setUp(
     scn.inject(
       nothingFor(5),
-      atOnceUsers(5),
-      rampUsers(10).during(10)
+      constantUsersPerSec(10).during(10),
+      rampUsersPerSec(1).to(5).during(20)
     )
   ).protocols(httpProtocol)
-
 
 }
